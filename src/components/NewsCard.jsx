@@ -1,8 +1,13 @@
 import { Card, Stack, Typography } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function NewsCard(props){
     const [data, setData] = useState(props.data)
+
+    useEffect(()=>{
+        setData(props.data)
+    }, [props])
+
     return(
         <Card className="card-same-heigth">
             <Stack spacing={3}>
