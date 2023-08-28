@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Grid, Box, Tabs, Tab } from "@mui/material";
 import NewsCard from '../components/NewsCard';
-
 import axios from '../services/axios';
+
+
 export default function Main() {
     const categories = ['general', 'business', 'entertainment', 'health', 'science', 'sports', 'technology']
 
@@ -17,12 +18,14 @@ export default function Main() {
 
     const getNews = useCallback(async () => {
         try{
-            const response = await axios.get('/news');
+            const response = await axios.get('/ne');
             console.log(response);
             setReload(!reload);
             setNewsList(response.data.data)
         } catch(error){
-            console.log(error)
+            if (error.response.status === 500) {
+                window.location.replace("/error")
+            }
         }
     })
 

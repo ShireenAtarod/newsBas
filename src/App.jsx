@@ -1,13 +1,19 @@
 import { useState } from 'react'
-import Header from './Sections/header.jsx';
-import Main from './Sections/main.jsx';
+import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/home';
+import Error404 from './pages/error404';
 import './App.css';
 
 function App() {
+
   return (
     <>
-      <Header />
-      <Main />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="error" element={<Error404 />} />
+        </Routes>
+      </Router>
     </>
   )
 }
