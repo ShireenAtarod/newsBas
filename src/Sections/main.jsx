@@ -13,16 +13,20 @@ export default function Main() {
     const [tabValue, setTabValue] = useState(0);
     const [reload, setReload] = useState(true);
     const [pageCount, setPageCount] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1)
 
     renderCount.current++;
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
         axios.defaults.params['categories'] = categories[newValue];
+        axios.defaults.params['offset'] = 0
+        setCurrentPage(1)
     };
 
     const handleOnPageChange = (event, newPage) => {
         axios.defaults.params['offset'] = newPage;
+        setCurrentPage(newPage)
         getNews();
     }
 
@@ -33,12 +37,8 @@ export default function Main() {
             console.log(response);
             setReload(!reload);
             setNewsList(response.data.data)
-            if (pageCount === 0) {
-                console.log(4)
-                const pagination = response.data.pagination
-                setPageCount(Math.ceil(pagination.total / pagination.limit));
-            }
-
+            const pagination = response.data.pagination
+            setPageCount(Math.ceil(pagination.total / pagination.limit));
         } catch(error){
             if (error.response.status === 403) {
                 window.location.replace("/error")
@@ -83,7 +83,7 @@ export default function Main() {
                 }
             </Grid>
             <Box sx={{marginTop: "3vh"}}>
-                <Pagination count={pageCount} variant="outlined" color="primary" onChange={handleOnPageChange} />
+                <Pagination count={pageCount} page={currentPage} variant="outlined" color="primary" onChange={handleOnPageChange} />
             </Box>
 
         </>
