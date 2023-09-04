@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Grid, Box, Tabs, Tab, TextField, Button } from "@mui/material";
+import { Grid, Box, Tabs, Tab, TextField, Button, Pagination } from "@mui/material";
 import NewsCard from '../components/NewsCard';
 import axios from '../services/axios';
 
@@ -12,20 +12,33 @@ export default function Main() {
     const [newsList, setNewsList] = useState(null);
     const [tabValue, setTabValue] = useState(0);
     const [reload, setReload] = useState(true);
+    const [pageCount, setPageCount] = useState(0);
 
     renderCount.current++;
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
         axios.defaults.params['categories'] = categories[newValue];
-      };
+    };
+
+    const handleOnPageChange = (event, newPage) => {
+        axios.defaults.params['offset'] = newPage;
+        getNews();
+    }
 
     const getNews = useCallback(async () => {
         try{
+            axios.defaults.params['limit'] = 26;
             const response = await axios.get('/news');
             console.log(response);
             setReload(!reload);
             setNewsList(response.data.data)
+            if (pageCount === 0) {
+                console.log(4)
+                const pagination = response.data.pagination
+                setPageCount(Math.ceil(pagination.total / pagination.limit));
+            }
+
         } catch(error){
             if (error.response.status === 403) {
                 window.location.replace("/error")
@@ -43,7 +56,6 @@ export default function Main() {
 
     return(
         <>
-            {console.log(1)}
             <p style={{display: 'flex', left: '0', marginTop: '8vh'}}>Render Count: {renderCount.current}</p>
             <Box sx={{display: 'flex'}}>
                 <TextField label="search" variant="outlined" inputRef={searchRef} sx={{float: 'left'}} /> 
@@ -70,6 +82,9 @@ export default function Main() {
                 </h1>
                 }
             </Grid>
+            <Box sx={{marginTop: "3vh"}}>
+                <Pagination count={pageCount} variant="outlined" color="primary" onChange={handleOnPageChange} />
+            </Box>
 
         </>
     )
