@@ -11,6 +11,7 @@ export default function Main() {
     const renderCount = useRef(0);
     const [newsList, setNewsList] = useState(null);
     const [tabValue, setTabValue] = useState(0);
+    const [searchValue, setSearchValue] = useState('');
     const [reload, setReload] = useState(true);
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1)
@@ -30,6 +31,21 @@ export default function Main() {
         getNews();
     }
 
+    const handleOnSearchKeyUp = (event) => {
+        if (searchRef.current.value.length > 1){
+            setSearchValue(searchRef.current.value)
+        }
+        else {
+            setSearchValue('')
+        }
+    }
+
+    const handleOnSearchClick = (event) => {
+        event.preventDefault();
+        setReload(!reload)
+        console.log(searchRef.current.value)
+    }
+
     const getNews = useCallback(async () => {
         try{
             axios.defaults.params['limit'] = 26;
@@ -40,9 +56,9 @@ export default function Main() {
             const pagination = response.data.pagination
             setPageCount(Math.ceil(pagination.total / pagination.limit));
         } catch(error){
-            if (error.response.status === 403) {
-                window.location.replace("/error")
-            }
+            // if (error.response.status === 403) {
+            //     window.location.replace("/error")
+            // }
         }
     })
 
@@ -58,8 +74,10 @@ export default function Main() {
         <>
             <p style={{display: 'flex', left: '0', marginTop: '8vh'}}>Render Count: {renderCount.current}</p>
             <Box sx={{display: 'flex'}}>
-                <TextField label="search" variant="outlined" inputRef={searchRef} sx={{float: 'left'}} /> 
-                <Button variant="contained" sx={{float: 'left', margin: '1px 5px'}} onClick={()=>setReload(!reload)}>Search</Button>
+                <form onSubmit={handleOnSearchClick} >
+                    <TextField label="search" variant="outlined" inputRef={searchRef} sx={{float: 'left'}} onKeyUp={handleOnSearchKeyUp} /> 
+                    <Button type="submit" variant="contained" sx={{float: 'left', margin: '1px 5px'}} >Search</Button>
+                </form>
             </Box>
             <Tabs value={tabValue} onChange={handleTabChange} sx={{marginTop: "10vh"}}>
                 {categories.map((category) => {
@@ -69,7 +87,7 @@ export default function Main() {
                 })}
             </Tabs>
             <Grid container spacing={3} sx={{marginTop: "3vh"}}>
-                {newsList ? newsList.map((news, index) => {
+                {newsList ? newsList.filter((n) => {return n.title.toLowerCase().match(searchValue)}).map((news, index) => {
                     return(
                         <Grid item xs={(index === 0 && 8) || 4}>
                             <NewsCard data={news}/>
