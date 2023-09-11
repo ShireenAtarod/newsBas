@@ -1,11 +1,17 @@
 import BlackBox from "../components/BlackBox";
-import { Card } from "@mui/material";
+import { Card, Button } from "@mui/material";
 
 export default function Header() {
     return(
         <Card className="header">
             <BlackBox>
-                
+                <Button 
+                    variant="text" 
+                    className="header-button" 
+                    onClick={()=>window.location.assign("/login")}
+                >
+                    Login
+                </Button>
             </BlackBox>
         </Card>
     )

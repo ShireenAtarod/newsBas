@@ -41,7 +41,7 @@ export default function Main() {
     }
 
     const handleOnSearchClick = (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         setReload(!reload)
         console.log(searchRef.current.value)
     }
