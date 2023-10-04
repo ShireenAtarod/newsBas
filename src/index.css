@@ -13,9 +13,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-* {
-  color: var(--black);
-}
 
 a {
   font-weight: 500;
@@ -74,4 +71,9 @@ button:focus-visible {
 
 .card-same-heigth{
   height: 100%;
+}
+
+.dark{
+  background-color: #2d2d2d !important;
+  color: var(--white) !important;
 }

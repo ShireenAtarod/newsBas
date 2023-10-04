@@ -50,7 +50,7 @@ export default function Main() {
         try{
             axios.defaults.params['limit'] = 26;
             const response = await axios.get('/news');
-            console.log(response);
+            // console.log(response);
             setReload(!reload);
             setNewsList(response.data.data)
             const pagination = response.data.pagination

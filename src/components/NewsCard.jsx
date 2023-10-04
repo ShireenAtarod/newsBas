@@ -1,7 +1,10 @@
 import { Card, Stack, Typography } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { ThemeContext } from "../App"
 
 export default function NewsCard(props){
+    
+    const { isDarkMode } = useContext(ThemeContext)
     const [data, setData] = useState(props.data)
 
     useEffect(()=>{
@@ -9,7 +12,7 @@ export default function NewsCard(props){
     }, [props])
 
     return(
-        <Card className="card-same-heigth">
+        <Card className={"card-same-heigth " + (isDarkMode===true && 'dark')}>
             <Stack spacing={3}>
                 <img src={data.image} className="news-image" />
                 <Typography variant="h4">{data.title}</Typography>

@@ -61,7 +61,8 @@
 
 .header-button {
   color: white !important;
-  float: right;
+  float: left;
   height: 100%;
   margin: 0 1vw;
 };
+
