@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react'
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
-import { FormControlLabel, Switch, styled } from '@mui/material';
+import { FormControlLabel, Switch, styled, Select, MenuItem } from '@mui/material';
 import Home from './pages/home';
 import Login from './pages/login';
 import Error404 from './pages/error404';
@@ -62,15 +62,15 @@ function App() {
   }));
 
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [lang, setLang] = useState('en')
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
   }
 
-  // console.log(ThemeContext.Provider)
 
   return (
-    <ThemeContext.Provider value={{isDarkMode, toggleDarkMode}}>
+    <ThemeContext.Provider value={{isDarkMode, lang}}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -79,6 +79,10 @@ function App() {
         </Routes>
       </Router>
       <MaterialUISwitch sx={{ m: 1 }} checked={isDarkMode} onChange={toggleDarkMode} />
+      <Select value={lang} variant='standard' onChange={(e) => setLang(e.target.value)} sx={{position: 'fixed', bottom: '0', right: '10px'}}>
+          <MenuItem value="en">en</MenuItem>
+          <MenuItem value="fa">فارسی</MenuItem>
+        </Select>
     </ThemeContext.Provider>
   )
 }
