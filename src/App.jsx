@@ -80,9 +80,9 @@ function App() {
       </Router>
       <MaterialUISwitch sx={{ m: 1 }} checked={isDarkMode} onChange={toggleDarkMode} />
       <Select value={lang} variant='standard' onChange={(e) => setLang(e.target.value)} sx={{position: 'fixed', bottom: '0', right: '10px'}}>
-          <MenuItem value="en">en</MenuItem>
+          <MenuItem value="en">English</MenuItem>
           <MenuItem value="fa">فارسی</MenuItem>
-        </Select>
+      </Select>
     </ThemeContext.Provider>
   )
 }
